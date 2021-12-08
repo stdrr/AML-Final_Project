@@ -228,15 +228,12 @@ log_config = dict(
         dict(type='TextLoggerHook'),
     ])
 
-##### Custom
-from datetime import datetime
-
 
 total_epochs = 16
 device_ids = "0,1"
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = f'/gdrive/MyDrive/University/Second_year/AML/AML-Final_Project/checkpoints/culane/small/{datetime.now().strftime("%Y_%m_%d-%H:%M:%S")}'
+work_dir = './work_dirs/exps/culane/small'
 load_from = None
 resume_from = None
 workflow = [('train', 200), ('val', 1)]
