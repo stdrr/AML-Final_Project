@@ -3,7 +3,7 @@
 """
 # global settings
 dataset_type = 'CulaneDataset'
-data_root = "/disk1/zhouyang/dataset/culane"
+data_root = "./data/culane"
 mask_down_scale = 8
 hm_down_scale = 16
 num_lane_classes = 1
@@ -184,7 +184,7 @@ val_pipeline = [
 data = dict(
     samples_per_gpu=
     batch_size,
-    workers_per_gpu=8,
+    workers_per_gpu=2,
     train=dict(
         type=dataset_type,
         data_root=data_root,
@@ -228,11 +228,15 @@ log_config = dict(
         dict(type='TextLoggerHook'),
     ])
 
+##### Custom
+from datetime import datetime
+
+
 total_epochs = 16
 device_ids = "0,1"
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/exps/culane/small'
+work_dir = f'/gdrive/MyDrive/University/Second_year/AML/AML-Final_Project/checkpoints/culane/small/{datetime.now().strftime("%Y_%m_%d-%H:%M:%S")}'
 load_from = None
 resume_from = None
 workflow = [('train', 200), ('val', 1)]

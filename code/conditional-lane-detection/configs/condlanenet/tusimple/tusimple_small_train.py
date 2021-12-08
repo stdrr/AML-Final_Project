@@ -3,7 +3,7 @@
 """
 # global settings
 dataset_type = 'TuSimpleDataset'
-data_root = "/disk1/zhouyang/dataset/tuSimple"
+data_root = "./data/tusimple"
 test_mode = False
 mask_down_scale = 8
 hm_down_scale = 16
@@ -185,7 +185,7 @@ val_pipeline = [
 data = dict(
     samples_per_gpu=
     batch_size,
-    workers_per_gpu=4,
+    workers_per_gpu=2,
     train=dict(
         type=dataset_type,
         data_root=data_root,
@@ -233,11 +233,14 @@ log_config = dict(
         dict(type='TextLoggerHook'),
     ])
 
+##### Custom
+from datetime import datetime
+
 total_epochs = 70
 device_ids = "0,1"
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/tusimple/small'
+work_dir = f'/gdrive/MyDrive/University/Second_year/AML/AML-Final_Project/checkpoints/tusimple/small/{datetime.now().strftime("%Y_%m_%d-%H:%M:%S")}'
 load_from = None
 resume_from = None
 workflow = [('train', 200), ('val', 1)]
