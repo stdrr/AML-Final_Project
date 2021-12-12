@@ -13,9 +13,10 @@ class RedNetInvolution(torch.nn.Module):
                                      finetune=finetune,
                                      checkpoint_name=checkpoint_name)
         
-        self.conv1 = model.conv1
-        self.bn1 = model.bn1
-        self.relu = model.relu
+        # self.conv1 = model.conv1
+        # self.bn1 = model.bn1
+        # self.relu = model.relu
+        self.stem = model.stem
         self.maxpool = model.maxpool
         self.layer1 = model.layer1
         self.layer2 = model.layer2
@@ -23,9 +24,10 @@ class RedNetInvolution(torch.nn.Module):
         self.layer4 = model.layer4
 
     def forward(self,x):
-        x = self.conv1(x)
-        x = self.bn1(x)
-        x = self.relu(x)
+        # x = self.conv1(x)
+        # x = self.bn1(x)
+        # x = self.relu(x)
+        x = self.stem(x)
         x = self.maxpool(x)
         x = self.layer1(x)
         x2 = self.layer2(x)
