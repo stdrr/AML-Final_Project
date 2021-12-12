@@ -1,6 +1,6 @@
 # DATA
 dataset='Tusimple'
-data_root = './tusimple/'
+data_root = '../tusimple/'
 
 # TRAIN
 epoch = 100
@@ -29,7 +29,7 @@ shp_loss_w = 0.0
 # EXP
 note = ''
 
-log_path = './checkpoints/tusimple/'
+log_path = '../checkpoints/tusimple/'
 
 # FINETUNE or RESUME MODEL PATH
 finetune = None

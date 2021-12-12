@@ -1,6 +1,17 @@
 import torch, os, datetime
 import numpy as np
 
+#####################################
+#
+# ADD ROOT DIRECTORY TO PATH
+#
+#####################################
+import sys
+abs_root_dir = '/'.join(os.path.dirname(os.path.realpath(__file__)).split('/')[:-1])
+sys.path.insert(1, os.path.join(abs_root_dir))
+
+#####################################
+
 from model.model import parsingNet
 from data.dataloader import get_train_loader
 
@@ -108,7 +119,7 @@ if __name__ == "__main__":
         torch.distributed.init_process_group(backend='nccl', init_method='env://')
     dist_print(datetime.datetime.now().strftime('[%Y/%m/%d %H:%M:%S]') + ' start training...')
     dist_print(cfg)
-    assert cfg.backbone in ['18','34','50','101','152','50next','101next','50wide','101wide']
+    assert cfg.backbone in ['26','38','50','101','152']
 
 
     train_loader, cls_num_per_lane = get_train_loader(cfg.batch_size, cfg.data_root, cfg.griding_num, cfg.dataset, cfg.use_aux, distributed, cfg.num_lanes)
