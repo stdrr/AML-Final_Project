@@ -1,0 +1,3 @@
+mmcv
+-r ./Ultra-Fast-Lane-Detection-master/requirements.txt
+-r ./mmclassification/requirements.txt
