@@ -1,5 +1,5 @@
 {
     "pretrained":true,
-    "finetune":false,
+    "finetune":true,
     "checkpoint_name":"/content/drive/MyDrive/University/Second_year/AML/AML-Final_Project/checkpoints RedNet/rednet26-4948f75f.pth"
 }
