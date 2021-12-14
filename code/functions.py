@@ -28,7 +28,6 @@ def get_RedNetInvolution(depth:int, pretrained:bool, finetune:bool, checkpoint_n
     else:
         set_parameter_requires_grad(model.stem, True)
         set_parameter_requires_grad(model.layer1, True)
-        set_parameter_requires_grad(model.layer2, True)
 
     return model
 
