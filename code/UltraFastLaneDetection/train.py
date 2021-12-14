@@ -133,11 +133,12 @@ if __name__ == "__main__":
     if cfg.finetune is not None:
         dist_print('finetune from ', cfg.finetune)
         state_all = torch.load(cfg.finetune)['model']
-        state_clip = {}  # only use backbone parameters
-        for k,v in state_all.items():
-            if 'model' in k:
-                state_clip[k] = v
-        net.load_state_dict(state_clip, strict=False)
+        # state_clip = {}  # only use backbone parameters
+        # for k,v in state_all.items():
+        #     if 'model' in k:
+        #         state_clip[k] = v
+        # net.load_state_dict(state_clip, strict=False)
+        net.load_state_dict(state_all)
     if cfg.resume is not None:
         dist_print('==> Resume model from ' + cfg.resume)
         resume_dict = torch.load(cfg.resume, map_location='cpu')
