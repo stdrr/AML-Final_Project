@@ -1,2 +1,2 @@
 # AML-Final_Project
-Repository for the Advanced Machine Learning final project - Custom model based on CondLaneNet https://github.com/aliyun/conditional-lane-detection
+Repository for the Advanced Machine Learning final project - Custom model based on UltraFastLaneDetection https://github.com/cfzd/Ultra-Fast-Lane-Detection.git
