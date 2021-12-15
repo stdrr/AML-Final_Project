@@ -143,9 +143,14 @@ if __name__ == "__main__":
         dist_print('==> Resume model from ' + cfg.resume)
         resume_dict = torch.load(cfg.resume, map_location='cpu')
         net.load_state_dict(resume_dict['model'])
-        if 'optimizer' in resume_dict.keys():
-            optimizer.load_state_dict(resume_dict['optimizer'])
         resume_epoch = int(os.path.split(cfg.resume)[1][2:5]) + 1
+        if 'optimizer' in resume_dict.keys():
+            start_lr = (cfg.learning_rate * 2) / (1 + np.cos((resume_epoch / cfg.epoch) * np.pi))
+            optimizer.load_state_dict(resume_dict['optimizer'])
+            if cfg.force_lr_value:
+                print(f'==> Forcing the LR to', cfg.learning_rate)
+                for g in optimizer.param_groups:
+                    g['lr'] = start_lr
     else:
         resume_epoch = 0
 

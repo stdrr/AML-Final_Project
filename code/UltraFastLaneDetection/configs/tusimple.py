@@ -10,6 +10,7 @@ optimizer = 'Adam'    #['SGD','Adam']
 learning_rate = 4e-4
 weight_decay = 1e-4
 momentum = 0.9
+force_lr_value = False
 
 scheduler = 'cos'     #['multi', 'cos']
 # steps = [50,75]
