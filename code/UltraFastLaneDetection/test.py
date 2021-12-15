@@ -1,4 +1,16 @@
 import torch, os
+
+#####################################
+#
+# ADD ROOT DIRECTORY TO PATH
+#
+#####################################
+import sys
+abs_root_dir = '/'.join(os.path.dirname(os.path.realpath(__file__)).split('/')[:-1])
+sys.path.insert(1, os.path.join(abs_root_dir))
+
+#####################################
+
 from model.model import parsingNet
 from utils.common import merge_config
 from utils.dist_utils import dist_print
@@ -17,7 +29,7 @@ if __name__ == "__main__":
         torch.cuda.set_device(args.local_rank)
         torch.distributed.init_process_group(backend='nccl', init_method='env://')
     dist_print('start testing...')
-    assert cfg.backbone in ['18','34','50','101','152','50next','101next','50wide','101wide']
+    assert cfg.backbone in ['26','38','50','101','152']
 
     if cfg.dataset == 'CULane':
         cls_num_per_lane = 18

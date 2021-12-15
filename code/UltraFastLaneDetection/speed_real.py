@@ -1,6 +1,20 @@
 # Thanks for the contribution of KopiSoftware https://github.com/KopiSoftware
 
 import torch
+
+import os
+
+#####################################
+#
+# ADD ROOT DIRECTORY TO PATH
+#
+#####################################
+import sys
+abs_root_dir = '/'.join(os.path.dirname(os.path.realpath(__file__)).split('/')[:-1])
+sys.path.insert(1, os.path.join(abs_root_dir))
+
+#####################################
+
 import time
 import numpy as np
 from model.model import parsingNet
