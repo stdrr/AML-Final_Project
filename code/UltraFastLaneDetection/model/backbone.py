@@ -5,17 +5,15 @@ from functions import get_RedNetInvolution
 
 
 class RedNetInvolution(torch.nn.Module):
-    def __init__(self, layers, pretrained, finetune, checkpoint_name):
+    def __init__(self, layers, pretrained, finetune, checkpoint_name, frozen_blocks):
         super(RedNetInvolution,self).__init__()
         
         model = get_RedNetInvolution(depth=layers,
                                      pretrained=pretrained,
                                      finetune=finetune,
-                                     checkpoint_name=checkpoint_name)
+                                     checkpoint_name=checkpoint_name,
+                                     frozen_blocks=frozen_blocks)
         
-        # self.conv1 = model.conv1
-        # self.bn1 = model.bn1
-        # self.relu = model.relu
         self.stem = model.stem
         self.maxpool = model.maxpool
         self.layer1 = model.layer1
@@ -24,9 +22,6 @@ class RedNetInvolution(torch.nn.Module):
         self.layer4 = model.layer4
 
     def forward(self,x):
-        # x = self.conv1(x)
-        # x = self.bn1(x)
-        # x = self.relu(x)
         x = self.stem(x)
         x = self.maxpool(x)
         x = self.layer1(x)

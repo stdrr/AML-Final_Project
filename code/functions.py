@@ -5,7 +5,7 @@ from collections import OrderedDict
 import json
 
 
-def get_RedNetInvolution(depth:int, pretrained:bool, finetune:bool, checkpoint_name:str):
+def get_RedNetInvolution(depth:int, pretrained:bool, finetune:bool, checkpoint_name:str, frozen_blocks=[1,2]):
   """
   Get the RedNetInvolution introduced in https://arxiv.org/abs/2103.06255 .
 
@@ -15,6 +15,7 @@ def get_RedNetInvolution(depth:int, pretrained:bool, finetune:bool, checkpoint_n
   :param finetune: finetune the network; if False, set the .requires_grad attribute
                    of all the network parameters to False
   :param checkpoint_name: path to the checkpoint file to load
+  :param frozen_blocks: number of the blocks of the RedNetInvolution for which disable training
 
   :return model
   """
@@ -25,6 +26,10 @@ def get_RedNetInvolution(depth:int, pretrained:bool, finetune:bool, checkpoint_n
     model = load_pretrained_model(model, checkpoint_name)
     if not finetune:
       set_parameter_requires_grad(model, True)
+    else:
+      set_parameter_requires_grad(model.stem, True)
+      for num_block in frozen_blocks:
+        set_parameter_requires_grad(eval(f'model.layer{num_block}'), True)
     
   return model
 
@@ -76,20 +81,27 @@ def set_parameter_requires_grad(model, feature_extracting:bool):
           param.requires_grad = False
 
 
-def parse_configuration(conf_file='./cfg_file.json'):
+def parse_configuration(cfg):
   """
   Parse the JSON configuration file by default in the root directory.
   For simplicity, define your configuration file as the default one.
   Customized file paths will require the edit of the UltraFastLaneDetection/model/model.py file
   """
-  with open(conf_file, 'r') as cfg_file:
-    cfg_dict = json.load(cfg_file)
+  # with open(conf_file, 'r') as cfg_file:
+  #   cfg_dict = json.load(cfg_file)
   
-  pretrained = bool(cfg_dict['pretrained'])
-  finetune = bool(cfg_dict['finetune'])
-  checkpoint_name = cfg_dict['checkpoint_name']
+  # pretrained = bool(cfg_dict['pretrained'])
+  # finetune = bool(cfg_dict['finetune'])
+  # checkpoint_name = cfg_dict['checkpoint_name']
 
-  return pretrained, finetune, checkpoint_name
+  # return pretrained, finetune, checkpoint_name
+  cfg_dict = {}
+  cfg_dict['pretrained'] = True if cfg.backbone_checkpoint is not None else False
+  cfg_dict['checkpoint_name'] = cfg.backbone_checkpoint
+  cfg_dict['finetune'] = cfg.finetune_backbone
+  cfg_dict['frozen_blocks'] = cfg.frozen_blocks
+  return cfg_dict
+    
 
 
 

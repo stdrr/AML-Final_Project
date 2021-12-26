@@ -17,8 +17,10 @@ class conv_bn_relu(torch.nn.Module):
         x = self.bn(x)
         x = self.relu(x)
         return x
+
+
 class parsingNet(torch.nn.Module):
-    def __init__(self, size=(288, 800), pretrained=True, backbone='50', cls_dim=(37, 10, 4), use_aux=False):
+    def __init__(self, size=(288, 800), pretrained=True, backbone='50', cls_dim=(37, 10, 4), use_aux=False, backbone_cfg={}):
         super(parsingNet, self).__init__()
 
         self.size = size
@@ -36,8 +38,9 @@ class parsingNet(torch.nn.Module):
         #
         #############################################################################
 
-        self.pretrained, self.finetune, self.checkpoint_name = parse_configuration()
-        self.model = RedNetInvolution(int(backbone), self.pretrained, self.finetune, self.checkpoint_name)
+        self.model = RedNetInvolution(int(backbone), pretrained=backbone_cfg['pretrained'], 
+                                      finetune=backbone_cfg['finetune'], checkpoint_name=backbone_cfg['checkpoint_name'],
+                                      frozen_blocks=backbone_cfg['frozen_blocks'])
 
         ### END OF THE CUSTOM LINES OF CODE #########################################
 

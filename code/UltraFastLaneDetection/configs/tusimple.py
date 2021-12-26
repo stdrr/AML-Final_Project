@@ -10,7 +10,7 @@ optimizer = 'Adam'    #['SGD','Adam']
 learning_rate = 4e-4
 weight_decay = 1e-4
 momentum = 0.9
-force_lr_value = False
+force_lr_value = False # custom
 
 scheduler = 'cos'     #['multi', 'cos']
 # steps = [50,75]
@@ -22,6 +22,9 @@ warmup_iters = 100
 backbone = '26'
 griding_num = 100
 use_aux = True
+backbone_checkpoint = 'checkpoints RedNet/rednet26-4948f75f.pth' # custom
+finetune_backbone = False # custom
+frozen_blocks = None # custom
 
 # LOSS
 sim_loss_w = 1.0

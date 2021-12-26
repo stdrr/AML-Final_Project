@@ -7,6 +7,7 @@ import numpy as np
 #
 #####################################
 import sys
+from code.functions import parse_configuration
 abs_root_dir = '/'.join(os.path.dirname(os.path.realpath(__file__)).split('/')[:-1])
 sys.path.insert(1, os.path.join(abs_root_dir))
 
@@ -124,7 +125,9 @@ if __name__ == "__main__":
 
     train_loader, cls_num_per_lane = get_train_loader(cfg.batch_size, cfg.data_root, cfg.griding_num, cfg.dataset, cfg.use_aux, distributed, cfg.num_lanes)
 
-    net = parsingNet(pretrained = True, backbone=cfg.backbone,cls_dim = (cfg.griding_num+1,cls_num_per_lane, cfg.num_lanes),use_aux=cfg.use_aux).cuda()
+    backbone_cfg = parse_configuration(cfg)
+
+    net = parsingNet(pretrained = True, backbone=cfg.backbone,cls_dim = (cfg.griding_num+1,cls_num_per_lane, cfg.num_lanes),use_aux=cfg.use_aux, backbone_cfg=backbone_cfg).cuda()
 
     if distributed:
         net = torch.nn.parallel.DistributedDataParallel(net, device_ids = [args.local_rank])
@@ -133,11 +136,6 @@ if __name__ == "__main__":
     if cfg.finetune is not None:
         dist_print('finetune from ', cfg.finetune)
         state_all = torch.load(cfg.finetune)['model']
-        # state_clip = {}  # only use backbone parameters
-        # for k,v in state_all.items():
-        #     if 'model' in k:
-        #         state_clip[k] = v
-        # net.load_state_dict(state_clip, strict=False)
         net.load_state_dict(state_all)
     if cfg.resume is not None:
         dist_print('==> Resume model from ' + cfg.resume)
@@ -145,10 +143,10 @@ if __name__ == "__main__":
         net.load_state_dict(resume_dict['model'])
         resume_epoch = int(os.path.split(cfg.resume)[1][2:5]) + 1
         if 'optimizer' in resume_dict.keys():
-            start_lr = (cfg.learning_rate * 2) / (1 + np.cos((resume_epoch / cfg.epoch) * np.pi))
             optimizer.load_state_dict(resume_dict['optimizer'])
             if cfg.force_lr_value:
                 print(f'==> Forcing the LR to', cfg.learning_rate)
+                start_lr = (cfg.learning_rate * 2) / (1 + np.cos((resume_epoch / cfg.epoch) * np.pi))
                 for g in optimizer.param_groups:
                     g['lr'] = start_lr
     else:

@@ -35,6 +35,9 @@ def get_args():
     parser.add_argument('--backbone', default = None, type = str)
     parser.add_argument('--griding_num', default = None, type = int)
     parser.add_argument('--use_aux', default = None, type = str2bool)
+    parser.add_argument('--backbone_checkpoint', default = None, type = str, help= 'Path to the backbone checkpoint') # custom
+    parser.add_argument('--finetune_backbone', default = None, type = str2bool, help = 'Finetune the backbone') # custom
+    parser.add_argument('--frozen_blocks', default = None, nargs = '+', help = 'Provide the numbers of the backbone blocks e.g. 2 3 4') # custom
     parser.add_argument('--sim_loss_w', default = None, type = float)
     parser.add_argument('--shp_loss_w', default = None, type = float)
     parser.add_argument('--note', default = None, type = str)
@@ -45,7 +48,7 @@ def get_args():
     parser.add_argument('--test_work_dir', default = None, type = str)
     parser.add_argument('--num_lanes', default = None, type = int)
     parser.add_argument('--auto_backup', action='store_true', help='automatically backup current code in the log path')
-    parser.add_argument('--force_lr_value', default = None, type = str2bool, help = 'Force the optimizer to start from the given lr value')
+    parser.add_argument('--force_lr_value', default = None, type = str2bool, help = 'Force the optimizer to start from the given lr value') # custom
 
     return parser
 
@@ -56,7 +59,8 @@ def merge_config():
     items = ['dataset','data_root','epoch','batch_size','optimizer','learning_rate',
     'weight_decay','momentum','scheduler','steps','gamma','warmup','warmup_iters',
     'use_aux','griding_num','backbone','sim_loss_w','shp_loss_w','note','log_path',
-    'finetune','resume', 'test_model','test_work_dir', 'num_lanes', 'force_lr_value']
+    'finetune','resume', 'test_model','test_work_dir', 'num_lanes', 'force_lr_value', 
+    'backbone_checkpoint', 'finetune_backbone', 'frozen_blocks']
     for item in items:
         if getattr(args, item) is not None:
             dist_print('merge ', item, ' config')
